@@ -1,0 +1,9 @@
+[ignore]
+
+[include]
+
+[libs]
+
+[options]
+esproposal.decorators=ignore
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
