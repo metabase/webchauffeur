@@ -20,7 +20,7 @@ export class Base {
 export class Element extends Base {
     _el: WebElement;
 
-    constructor(driver: ?Driver, el: ?WebElement) {
+    constructor(driver: ?Driver, el: WebElement) {
         super(driver);
         this._el = el;
     }
@@ -59,13 +59,13 @@ export class Driver extends Element {
     _wd: WebDriver;
 
     constructor(wd: WebDriver) {
-        super(null, null);
+        super(null, wd.findElement(By.xpath("/*")));
         this._wd = wd;
         this._driver = this;
     }
 
     @chain()
-    async get(url: String): Promise<Driver> {
+    async get(url: string): Promise<Driver> {
         await this._wd.get(url);
         return this;
     }

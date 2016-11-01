@@ -1,13 +1,13 @@
 {
   "name": "webchauffeur",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A nicer wrapper around Selenium WebDriver",
   "main": "dist/webchauffeur.js",
   "scripts": {
     "prepublish": "babel src --out-dir dist",
     "build-watch": "babel src --watch --out-dir dist",
     "test": "mocha --compilers js:babel-register --require babel-polyfill",
-    "lint": "eslint *.js"
+    "lint": "eslint src/*.js"
   },
   "repository": {
     "type": "git",
