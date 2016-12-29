@@ -1,15 +1,37 @@
 declare module "selenium-webdriver" {
 
     declare class WebDriver {
-        get(url: string): Promise<void>;
-        wait(condition: Condition|Function, timeout: ?number): WebElementPromise;
+        executeScript<T>(script: string, varArgs: any[]): Promise<T>;
         findElement(selector: By): WebElementPromise;
-        deleteAllCookies(): Promise<void>;
+        get(url: string): Promise<void>;
         getCurrentUrl(): Promise<string>;
+        manage(): Options;
+        sleep(ms: number): Promise<void>;
+        takeScreenshot(): Promise<string>;
+        wait(condition: Condition|Function, timeout: ?number): WebElementPromise;
+    }
+
+    declare class Options {
+        addCookie(spec: Cookie): Promise<void>;
+        getCookie(name: string): Promise<?Cookie>;
+        getCookies(): Promise<Cookie[]>;
+        deleteAllCookies(): Promise<void>;
+        deleteCookie(name: string): Promise<void>;
+    }
+
+    declare class Cookie {
+        domain?: string,
+        expiry?: Date|number,
+        httpOnly?: bool,
+        name: string,
+        path?: string,
+        secure?: bool,
+        value: string
     }
 
     declare class WebElement {
         findElement(selector: By): WebElementPromise;
+        findElements(selector: By): Promise<WebElement[]>;
         click(): Promise<void>;
         sendKeys(keys: string): Promise<void>;
         clear(): Promise<void>;

@@ -3,6 +3,11 @@
 import { WebDriver, WebElement, By } from "selenium-webdriver";
 
 import chain from "promise-chain-decorator";
+import fs from "mz/fs";
+import path from "path";
+
+import cssToXpath from "css-to-xpath";
+import "./css-to-xpath-addons";
 
 const DEFAULT_TIMEOUT = 5000;
 
@@ -55,32 +60,53 @@ export class Element extends Base {
     }
 }
 
+type DriverOptions = {
+    base: string,
+    react: bool,
+};
+
+type ScreenshotOptions = {
+    hideSelectors?: string[]
+}
+
 export class Driver extends Element {
     _wd: WebDriver;
+    _options: DriverOptions;
 
-    constructor(wd: WebDriver) {
+    constructor(wd: WebDriver, options?: DriverOptions) {
         super(null, wd.findElement(By.xpath("/*")));
         this._wd = wd;
         this._driver = this;
+        this._options = {
+            base: "",
+            react: true,
+            ...options
+        };
+    }
+
+    _url(url: string): string {
+        if (/^https?:\/\//.test(url)) {
+            return url;
+        } else {
+            return this._options.base + url;
+        }
     }
 
     @chain()
     async get(url: string): Promise<Driver> {
-        await this._wd.get(url);
+        await this._wd.get(this._url(url));
+        if (this._options.react) {
+            await this._installAnnotateReactDOM();
+        }
         return this;
     }
 
     @chain()
-    async waitUrl(url: String, timeout: ?number = DEFAULT_TIMEOUT): Promise<Driver> {
+    async waitUrl(url: string, timeout: ?number = DEFAULT_TIMEOUT): Promise<Driver> {
+        url = this._url(url);
         await this._wd.wait(async () => {
             return await this._wd.getCurrentUrl() === url
         }, timeout);
-        return this;
-    }
-
-    @chain()
-    async deleteAllCookies(): Promise<Driver> {
-        await this._wd.deleteAllCookies();
         return this;
     }
 
@@ -88,12 +114,62 @@ export class Driver extends Element {
         return this._wd.findElement(By.xpath("/*"));
     }
 
-    css(selector: string): Selector {
-        return new Selector(this._driver, this, By.css(selector));
+    css(css: string): Selector {
+        return new Selector(this._driver, this, By.css(css));
     }
 
-    select(selector: string): Selector {
-        return this.css(selector);
+    xpath(xpath: string): Selector {
+        return new Selector(this._driver, this, By.xpath(xpath));
+    }
+
+    select(enhancedCss: string): Selector {
+        const xpath = cssToXpath(enhancedCss);
+        return this.xpath(xpath);
+    }
+
+    sleep(milliseconds: number): Promise<void> {
+        return this._wd.sleep(milliseconds);
+    }
+
+    executeScript<T>(script: string, ...varArgs: any[]): Promise<T> {
+        return this._wd.executeScript(script, ...varArgs);
+    }
+
+    async loadModule(moduleName: string, globalName: string): Promise<void> {
+        const modulePath = require.resolve(moduleName);
+        const moduleSource = await fs.readFile(modulePath, "utf-8");
+        const exportsSource = globalName ? `window[${JSON.stringify(globalName)}] = {}` : `{}`;
+        await this.executeScript(`(function(exports) {\n${moduleSource}\n})(${exportsSource});`);
+    }
+
+    async _installAnnotateReactDOM(): Promise<void> {
+        await this.loadModule("annotate-react-dom", "AnnotateReactDOM");
+        await this.executeScript("AnnotateReactDOM.installSynchronousAnnotator(document, { attribute: '_react_'});")
+    }
+
+    async screenshot(filename: string, { hideSelectors }: ScreenshotOptions = {}): Promise<void> {
+        const dir = path.dirname(filename);
+        if (dir && !(await fs.exists(dir))){
+            await fs.mkdir(dir);
+        }
+
+        // hide non-deterministic elements
+        if (hideSelectors && hideSelectors.length > 0) {
+            await this.executeScript(`
+                for (var i = 0; i < arguments.length; i++) {
+                    var elements = document.querySelectorAll(arguments[i]);
+                    for (var j = 0; j < elements.length; j++) {
+                        elements[j].style.visibility = "hidden";
+                    }
+                }
+            `, ...hideSelectors);
+        }
+
+        // blur input focus to avoid capturing blinking cursor in diffs
+        await this.executeScript(`document.activeElement.blur();`);
+
+        const image = await this._wd.takeScreenshot();
+        await fs.writeFile(filename, image, 'base64');
     }
 }
 
@@ -123,6 +199,13 @@ export class Selector extends Base {
             return (await el.getText()) === expectedText && el;
         }, timeout);
         return new Element(this._driver, element);
+    }
+
+    async waitRemoved(expectedText: string, timeout: ?number = DEFAULT_TIMEOUT): Promise<void> {
+        await this.wd().wait(async () => {
+            const el = await this._parent.el().findElements(this._selector);
+            return !el || el.length === 0;
+        }, timeout);
     }
 
     @chain(Element)
