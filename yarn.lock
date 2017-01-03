@@ -31,9 +31,9 @@ ajv@^4.7.0:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
-annotate-react-dom@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/annotate-react-dom/-/annotate-react-dom-1.0.0.tgz#446b4667620c2d071344401344747b4fd7680b6f"
+annotate-react-dom@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/annotate-react-dom/-/annotate-react-dom-1.1.0.tgz#607c14d2565198d4bf365f6f05c60a61ba939a16"
 
 ansi-escapes@^1.1.0:
   version "1.4.0"
@@ -131,7 +131,7 @@ aws4@^1.2.1:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.5.0.tgz#0a29ffb79c31c9e712eeb087e8e7a64b4a56d755"
 
-babel-cli@^6.16.0:
+babel-cli@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-cli/-/babel-cli-6.18.0.tgz#92117f341add9dead90f6fa7d0a97c0cc08ec186"
   dependencies:
@@ -1588,7 +1588,7 @@ is-path-inside@^1.0.0:
 
 is-posix-bracket@^0.1.0:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/is-posix-bracket/-/is-posix-bracket-0.1.1.tgz#3334dc79774368e92f016e6fbc0a88f5cd6e6bc4"
+  resolved "http://registry.npmjs.org/is-posix-bracket/-/is-posix-bracket-0.1.1.tgz#3334dc79774368e92f016e6fbc0a88f5cd6e6bc4"
 
 is-primitive@^2.0.0:
   version "2.0.0"

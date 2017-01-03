@@ -1,3 +1,12 @@
+/*
+Copyright 2016 Metabase, Inc.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+*/
+
 /* @flow */
 
 import { WebDriver, WebElement, By } from "selenium-webdriver";
@@ -13,8 +22,7 @@ const DEFAULT_TIMEOUT = 5000;
 
 export class Base {
     _driver: Driver;
-    constructor(driver: ?Driver) {
-        // $FlowFixMe
+    constructor(driver: Driver) {
         this._driver = driver;
     }
     wd(): WebDriver {
@@ -22,11 +30,53 @@ export class Base {
     }
 }
 
-export class Element extends Base {
+export class Selector extends Base {
+    _parent: Element;
+    _selector: By;
+
+    constructor(driver: Driver, parent: Element, selector: By) {
+        super(driver);
+        this._parent = parent;
+        this._selector = selector;
+    }
+
+    @chain(() => Element)
+    async wait(timeout: ?number = DEFAULT_TIMEOUT): Promise<Element> {
+        // const element = await this.wd().wait(until.elementLocated(this._selector), timeout);
+        const element = await this.wd().wait(() => {
+            return this._parent.el().findElement(this._selector)
+        }, timeout);
+        return new Element(this._driver, this._parent, this._selector, element);
+    }
+
+    @chain(() => Element)
+    async waitText(expectedText: string, timeout: ?number = DEFAULT_TIMEOUT): Promise<Element> {
+        const element = await this.wd().wait(async () => {
+            const el = this._parent.el().findElement(this._selector);
+            return (await el.getText()) === expectedText && el;
+        }, timeout);
+        return new Element(this._driver, this._parent, this._selector, element);
+    }
+
+    async waitRemoved(expectedText: string, timeout: ?number = DEFAULT_TIMEOUT): Promise<void> {
+        await this.wd().wait(async () => {
+            const el = await this._parent.el().findElements(this._selector);
+            return !el || el.length === 0;
+        }, timeout);
+    }
+
+    @chain(() => Element)
+    async find(): Promise<Element> {
+        const element = await this._parent.el().findElement(this._selector);
+        return new Element(this._driver, this._parent, this._selector, element);
+    }
+}
+
+export class Element extends Selector {
     _el: WebElement;
 
-    constructor(driver: ?Driver, el: WebElement) {
-        super(driver);
+    constructor(driver: Driver, parent: Element, selector: By, el: WebElement) {
+        super(driver, parent, selector);
         this._el = el;
     }
     el() {
@@ -74,7 +124,8 @@ export class Driver extends Element {
     _options: DriverOptions;
 
     constructor(wd: WebDriver, options?: DriverOptions) {
-        super(null, wd.findElement(By.xpath("/*")));
+        // $FlowFixMe
+        super(null, null, By.xpath("/*"), wd.findElement(By.xpath("/*")));
         this._wd = wd;
         this._driver = this;
         this._options = {
@@ -135,7 +186,7 @@ export class Driver extends Element {
         return this._wd.executeScript(script, ...varArgs);
     }
 
-    async loadModule(moduleName: string, globalName: string): Promise<void> {
+    async loadModule(moduleName: string, globalName?: string): Promise<void> {
         const modulePath = require.resolve(moduleName);
         const moduleSource = await fs.readFile(modulePath, "utf-8");
         const exportsSource = globalName ? `window[${JSON.stringify(globalName)}] = {}` : `{}`;
@@ -171,47 +222,9 @@ export class Driver extends Element {
         const image = await this._wd.takeScreenshot();
         await fs.writeFile(filename, image, 'base64');
     }
-}
 
-export class Selector extends Base {
-    _parent: Element;
-    _selector: By;
-
-    constructor(driver: Driver, parent: Element, selector: By) {
-        super(driver);
-        this._parent = parent;
-        this._selector = selector;
-    }
-
-    @chain(Element)
-    async wait(timeout: ?number = DEFAULT_TIMEOUT): Promise<Element> {
-        // const element = await this.wd().wait(until.elementLocated(this._selector), timeout);
-        const element = await this.wd().wait(() => {
-            return this._parent.el().findElement(this._selector)
-        }, timeout);
-        return new Element(this._driver, element);
-    }
-
-    @chain(Element)
-    async waitText(expectedText: string, timeout: ?number = DEFAULT_TIMEOUT): Promise<Element> {
-        const element = await this.wd().wait(async () => {
-            const el = this._parent.el().findElement(this._selector);
-            return (await el.getText()) === expectedText && el;
-        }, timeout);
-        return new Element(this._driver, element);
-    }
-
-    async waitRemoved(expectedText: string, timeout: ?number = DEFAULT_TIMEOUT): Promise<void> {
-        await this.wd().wait(async () => {
-            const el = await this._parent.el().findElements(this._selector);
-            return !el || el.length === 0;
-        }, timeout);
-    }
-
-    @chain(Element)
-    async find(): Promise<Element> {
-        const element = await this._parent.el().findElement(this._selector);
-        return new Element(this._driver, element);
+    quit(): Promise<void> {
+        return this._wd.quit();
     }
 }
 

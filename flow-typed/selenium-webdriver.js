@@ -6,6 +6,7 @@ declare module "selenium-webdriver" {
         get(url: string): Promise<void>;
         getCurrentUrl(): Promise<string>;
         manage(): Options;
+        quit(): Promise<void>;
         sleep(ms: number): Promise<void>;
         takeScreenshot(): Promise<string>;
         wait(condition: Condition|Function, timeout: ?number): WebElementPromise;
@@ -52,5 +53,10 @@ declare module "selenium-webdriver" {
 
     declare class until {
         static elementLocated(selector: By): Condition;
+    }
+
+    declare class Builder {
+        forBrowser(browser: string): Builder;
+        build(): WebDriver;
     }
 }
