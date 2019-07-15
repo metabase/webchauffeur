@@ -125,7 +125,7 @@ var Selector = exports.Selector = (_dec = (0, _promiseChainDecorator2.default)(f
     _createClass(Selector, [{
         key: "wait",
         value: function () {
-            var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
                 var _this2 = this;
 
                 var timeout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_TIMEOUT;
@@ -160,7 +160,7 @@ var Selector = exports.Selector = (_dec = (0, _promiseChainDecorator2.default)(f
     }, {
         key: "waitText",
         value: function () {
-            var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(expectedText) {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(expectedText) {
                 var _this3 = this;
 
                 var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_TIMEOUT;
@@ -170,7 +170,7 @@ var Selector = exports.Selector = (_dec = (0, _promiseChainDecorator2.default)(f
                         switch (_context3.prev = _context3.next) {
                             case 0:
                                 _context3.next = 2;
-                                return this.wd().wait(_asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+                                return this.wd().wait(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
                                     var el;
                                     return regeneratorRuntime.wrap(function _callee2$(_context2) {
                                         while (1) {
@@ -224,7 +224,7 @@ var Selector = exports.Selector = (_dec = (0, _promiseChainDecorator2.default)(f
     }, {
         key: "waitRemoved",
         value: function () {
-            var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(expectedText) {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(expectedText) {
                 var _this4 = this;
 
                 var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_TIMEOUT;
@@ -233,7 +233,7 @@ var Selector = exports.Selector = (_dec = (0, _promiseChainDecorator2.default)(f
                         switch (_context5.prev = _context5.next) {
                             case 0:
                                 _context5.next = 2;
-                                return this.wd().wait(_asyncToGenerator(regeneratorRuntime.mark(function _callee4() {
+                                return this.wd().wait(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
                                     var el;
                                     return regeneratorRuntime.wrap(function _callee4$(_context4) {
                                         while (1) {
@@ -271,7 +271,7 @@ var Selector = exports.Selector = (_dec = (0, _promiseChainDecorator2.default)(f
     }, {
         key: "find",
         value: function () {
-            var _ref6 = _asyncToGenerator(regeneratorRuntime.mark(function _callee6() {
+            var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
                 var element;
                 return regeneratorRuntime.wrap(function _callee6$(_context6) {
                     while (1) {
@@ -322,7 +322,7 @@ var Element = exports.Element = (_dec4 = (0, _promiseChainDecorator2.default)(),
     }, {
         key: "click",
         value: function () {
-            var _ref7 = _asyncToGenerator(regeneratorRuntime.mark(function _callee7() {
+            var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
                 return regeneratorRuntime.wrap(function _callee7$(_context7) {
                     while (1) {
                         switch (_context7.prev = _context7.next) {
@@ -350,7 +350,7 @@ var Element = exports.Element = (_dec4 = (0, _promiseChainDecorator2.default)(),
     }, {
         key: "sendKeys",
         value: function () {
-            var _ref8 = _asyncToGenerator(regeneratorRuntime.mark(function _callee8(keys) {
+            var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(keys) {
                 return regeneratorRuntime.wrap(function _callee8$(_context8) {
                     while (1) {
                         switch (_context8.prev = _context8.next) {
@@ -378,7 +378,7 @@ var Element = exports.Element = (_dec4 = (0, _promiseChainDecorator2.default)(),
     }, {
         key: "clear",
         value: function () {
-            var _ref9 = _asyncToGenerator(regeneratorRuntime.mark(function _callee9() {
+            var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9() {
                 return regeneratorRuntime.wrap(function _callee9$(_context9) {
                     while (1) {
                         switch (_context9.prev = _context9.next) {
@@ -406,7 +406,7 @@ var Element = exports.Element = (_dec4 = (0, _promiseChainDecorator2.default)(),
     }, {
         key: "blur",
         value: function () {
-            var _ref10 = _asyncToGenerator(regeneratorRuntime.mark(function _callee10() {
+            var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10() {
                 return regeneratorRuntime.wrap(function _callee10$(_context10) {
                     while (1) {
                         switch (_context10.prev = _context10.next) {
@@ -476,7 +476,7 @@ var Driver = (_dec8 = (0, _promiseChainDecorator2.default)(), _dec9 = (0, _promi
     }, {
         key: "get",
         value: function () {
-            var _ref11 = _asyncToGenerator(regeneratorRuntime.mark(function _callee11(url) {
+            var _ref11 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(url) {
                 return regeneratorRuntime.wrap(function _callee11$(_context11) {
                     while (1) {
                         switch (_context11.prev = _context11.next) {
@@ -513,7 +513,7 @@ var Driver = (_dec8 = (0, _promiseChainDecorator2.default)(), _dec9 = (0, _promi
     }, {
         key: "waitUrl",
         value: function () {
-            var _ref12 = _asyncToGenerator(regeneratorRuntime.mark(function _callee13(url) {
+            var _ref12 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee13(url) {
                 var _this7 = this;
 
                 var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : DEFAULT_TIMEOUT;
@@ -523,7 +523,7 @@ var Driver = (_dec8 = (0, _promiseChainDecorator2.default)(), _dec9 = (0, _promi
                             case 0:
                                 url = this._url(url);
                                 _context13.next = 3;
-                                return this._wd.wait(_asyncToGenerator(regeneratorRuntime.mark(function _callee12() {
+                                return this._wd.wait(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12() {
                                     return regeneratorRuntime.wrap(function _callee12$(_context12) {
                                         while (1) {
                                             switch (_context12.prev = _context12.next) {
@@ -601,7 +601,7 @@ var Driver = (_dec8 = (0, _promiseChainDecorator2.default)(), _dec9 = (0, _promi
     }, {
         key: "loadModule",
         value: function () {
-            var _ref14 = _asyncToGenerator(regeneratorRuntime.mark(function _callee14(moduleName, globalName) {
+            var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee14(moduleName, globalName) {
                 var modulePath, moduleSource, exportsSource;
                 return regeneratorRuntime.wrap(function _callee14$(_context14) {
                     while (1) {
@@ -634,7 +634,7 @@ var Driver = (_dec8 = (0, _promiseChainDecorator2.default)(), _dec9 = (0, _promi
     }, {
         key: "_installAnnotateReactDOM",
         value: function () {
-            var _ref15 = _asyncToGenerator(regeneratorRuntime.mark(function _callee15() {
+            var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee15() {
                 return regeneratorRuntime.wrap(function _callee15$(_context15) {
                     while (1) {
                         switch (_context15.prev = _context15.next) {
@@ -663,7 +663,7 @@ var Driver = (_dec8 = (0, _promiseChainDecorator2.default)(), _dec9 = (0, _promi
     }, {
         key: "screenshot",
         value: function () {
-            var _ref16 = _asyncToGenerator(regeneratorRuntime.mark(function _callee16(filename) {
+            var _ref16 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee16(filename) {
                 var _ref17 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
                     hideSelectors = _ref17.hideSelectors;
 
